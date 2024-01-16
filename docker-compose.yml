@@ -3,4 +3,10 @@ services:
   bank-service:
     image: bank-service
     build: .
- 
+    networks:
+      - system-test_dtupay-network
+
+networks:
+  system-test_dtupay-network:
+    external: true
+
