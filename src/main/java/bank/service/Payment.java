@@ -1,7 +1,10 @@
 package bank.service;
 
 import java.io.Serializable;
-
+/**
+ * @Author Alexander Elsing
+ * Mob programming, all members
+ */
 public class Payment implements Serializable {
     private static final long serialVersionUID = -1650614046686330604L;
     int amount;

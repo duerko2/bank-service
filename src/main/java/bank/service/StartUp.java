@@ -2,7 +2,9 @@ package bank.service;
 
 import dtu.ws.fastmoney.BankServiceService;
 import messaging.implementations.RabbitMqQueue;
-
+/**
+ * From Hubert Baumeister
+ */
 public class StartUp {
     public static void main(String[] args) throws Exception {
         new StartUp().startUp();
