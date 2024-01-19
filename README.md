@@ -28,8 +28,8 @@ DTUPay
 ├── bank-service
 ├── payment-service
 ├── reporting-service
-├── system-test
-└── token-service 
+├── token-service 
+└── system-test
 ```
 
 Run the following commands to build, test and run all the services and the system tests (assuming you have followed the directory structure and are currently in the DTUPay folder)
