@@ -3,7 +3,6 @@ package bank.service;
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
-import messaging.Event;
 import messaging.MessageQueue;
 import java.math.BigDecimal;
 
@@ -17,18 +16,20 @@ public class DTUPayBankService {
     public DTUPayBankService(MessageQueue q, BankService bank) {
         this.bank = bank;
         this.queue = q;
-        this.queue.addHandler("BankAccountsAssigned", this::makeBankTransfer);
+        this.queue.addHandler(BankAccountAssigned.class, e->makeBankTransfer((BankAccountAssigned)e));
     }
 
-    public void makeBankTransfer(Event event) {
-        var p = event.getArgument(0, Payment.class);
+    public void makeBankTransfer(BankAccountAssigned event) {
+        var paymendId = event.getPaymentId();
+        var amount = event.getAmount();
+        var customerBankId = event.getCustomerBankdId();
+        var merchantBankId = event.getMerchantBankId();
 
-        // Needs to actually transfer the money
 
         try {
 
             bank.transferMoneyFromTo(
-                    p.getCustomerBankId(), p.getMerchantBankId(), BigDecimal.valueOf(p.getAmount()), "paymentDesc");
+                    customerBankId, merchantBankId, BigDecimal.valueOf(amount), "paymentDesc");
 
         }catch (BankServiceException_Exception e){
             System.out.println(e.getMessage());
@@ -36,9 +37,7 @@ public class DTUPayBankService {
         }
 
         // Publish successful payment event
-        Event paymentSuccessfulEvent = new Event("PaymentSuccessful", new Object[]{p});
-        queue.publish(paymentSuccessfulEvent);
-
+        PaymentSuccessful paymentSuccessful = new PaymentSuccessful(paymendId);
+        queue.publish(paymentSuccessful);
     }
-
 }

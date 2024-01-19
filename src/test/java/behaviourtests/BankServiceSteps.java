@@ -1,16 +1,15 @@
 package behaviourtests;
 
-import bank.service.DTUPayBankService;
-import bank.service.Payment;
+import bank.service.*;
 import dtu.ws.fastmoney.*;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import messaging.MessageQueue;
-import messaging.Event;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
@@ -37,11 +36,12 @@ public class BankServiceSteps {
         payment.setMerchantBankId(merchantBankId);
         payment.setAmount(amount);
         payment.setCustomerBankId(customerBankId);
+        payment.setPaymentId(new PaymentId(UUID.randomUUID()));
     }
 
     @When("a {string} event is sent")
     public void aEventIsSent(String arg0) {
-        Event event = new Event(arg0, new Object[]{payment});
+        BankAccountAssigned event = new BankAccountAssigned(payment.getPaymentId(),customerBankId,merchantBankId,amount);
         service.makeBankTransfer(event);
     }
 
@@ -52,8 +52,9 @@ public class BankServiceSteps {
 
     @Then("a {string} event is published")
     public void aEventIsPublishedWithAPaymentID(String arg0) {
+        PaymentSuccessful paymentSuccessful = new PaymentSuccessful(payment.getPaymentId());
 
-        verify(queue).publish(new Event(arg0, new Object[]{payment}));
+        verify(queue).publish(paymentSuccessful);
 
     }
 

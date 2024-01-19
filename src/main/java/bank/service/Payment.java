@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Payment {
 
-    String paymentId;
+    PaymentId paymentId;
     int amount;
     String merchantBankId;
     String customerBankId;
@@ -12,11 +12,11 @@ public class Payment {
     public Payment() {
     }
 
-    public String getPaymentId() {
+    public PaymentId getPaymentId() {
         return paymentId;
     }
 
-    public void setPaymentId(String paymentId) {
+    public void setPaymentId(PaymentId paymentId) {
         this.paymentId = paymentId;
     }
 
