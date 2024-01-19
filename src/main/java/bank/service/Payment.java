@@ -1,7 +1,10 @@
 package bank.service;
 
 import java.util.Objects;
-
+/**
+ * @Author Alexander Elsing
+ * Mob programming, all members
+ */
 public class Payment {
 
     String paymentId;

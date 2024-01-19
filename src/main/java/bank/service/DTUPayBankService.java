@@ -6,7 +6,10 @@ import dtu.ws.fastmoney.BankServiceService;
 import messaging.Event;
 import messaging.MessageQueue;
 import java.math.BigDecimal;
-
+/**
+ * @Author Alexander Elsing
+ * Mob programming, all members
+ */
 public class DTUPayBankService {
 
     MessageQueue queue;
