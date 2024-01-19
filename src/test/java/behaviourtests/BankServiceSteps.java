@@ -6,6 +6,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import messaging.Event;
 import messaging.MessageQueue;
 
 import java.math.BigDecimal;
@@ -36,12 +37,12 @@ public class BankServiceSteps {
         payment.setMerchantBankId(merchantBankId);
         payment.setAmount(amount);
         payment.setCustomerBankId(customerBankId);
-        payment.setPaymentId(new PaymentId(UUID.randomUUID()));
+        payment.setPaymentId(UUID.randomUUID().toString());
     }
 
     @When("a {string} event is sent")
     public void aEventIsSent(String arg0) {
-        BankAccountAssigned event = new BankAccountAssigned(payment.getPaymentId(),customerBankId,merchantBankId,amount);
+        Event event = new Event(arg0,new Object[]{payment});
         service.makeBankTransfer(event);
     }
 
@@ -52,9 +53,10 @@ public class BankServiceSteps {
 
     @Then("a {string} event is published")
     public void aEventIsPublishedWithAPaymentID(String arg0) {
-        PaymentSuccessful paymentSuccessful = new PaymentSuccessful(payment.getPaymentId());
+        Event event = new Event(arg0,new Object[]{payment});
 
-        verify(queue).publish(paymentSuccessful);
+
+        verify(queue).publish(event);
 
     }
 

@@ -1,31 +1,47 @@
 package bank.service;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-public class Payment {
-
-    PaymentId paymentId;
+public class Payment implements Serializable {
+    private static final long serialVersionUID = -1650614046686330604L;
     int amount;
+    String merchantId;
+    String customerId;
     String merchantBankId;
     String customerBankId;
+    String paymentId;
 
     public Payment() {
-    }
-
-    public PaymentId getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(PaymentId paymentId) {
-        this.paymentId = paymentId;
     }
 
     public int getAmount() {
         return amount;
     }
 
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.customerId = accountId;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public String getMerchantBankId() {
@@ -44,16 +60,21 @@ public class Payment {
         this.customerBankId = customerBankId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Payment payment = (Payment) o;
-        return amount == payment.amount && Objects.equals(paymentId, payment.paymentId) && Objects.equals(merchantBankId, payment.merchantBankId) && Objects.equals(customerBankId, payment.customerBankId);
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(paymentId, amount, merchantBankId, customerBankId);
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Payment)) {
+            return false;
+        }
+        var c = (Payment) obj;
+        return c.getPaymentId().equals(this.getPaymentId());
     }
+
 }
